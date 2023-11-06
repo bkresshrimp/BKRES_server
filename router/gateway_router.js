@@ -26,6 +26,7 @@ gateway_router.post('/create',midleware.authenToken,async (req,res)=>{
                     lat: lat,
                     lon: lon,    
                 }],
+                is_public : req.body.is_public || false,
                 API :Api ,       
             })
             console.log(gateway)
