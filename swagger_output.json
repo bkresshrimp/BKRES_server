@@ -374,6 +374,70 @@
         }
       }
     },
+    "/api/device/getDevice/{API}": {
+      "post": {
+        "tags": [
+          "Device"
+        ],
+        "description": "Endpoint to get device",
+        "parameters": [
+          {
+            "name": "API",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/device/getallDevice/{API}": {
+      "post": {
+        "tags": [
+          "Device"
+        ],
+        "description": "Endpoint to get all device",
+        "parameters": [
+          {
+            "name": "API",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
     "/api/gateway/create": {
       "post": {
         "tags": [
@@ -399,6 +463,9 @@
                   "example": "any"
                 },
                 "lon": {
+                  "example": "any"
+                },
+                "is_public": {
                   "example": "any"
                 }
               }
@@ -515,7 +582,65 @@
         }
       }
     },
-    "/api/data/sendData": {
+    "/api/gateway/getGateway/{API}": {
+      "post": {
+        "tags": [
+          "Gateway"
+        ],
+        "description": "Endpoint to get gateway",
+        "parameters": [
+          {
+            "name": "API",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/gateway/getallGateway": {
+      "post": {
+        "tags": [
+          "Gateway"
+        ],
+        "description": "Endpoint to get all gateway",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/api/data/sendData1": {
       "get": {
         "tags": [
           "Data"
@@ -544,6 +669,64 @@
           },
           "404": {
             "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/data/sendData2": {
+      "post": {
+        "tags": [
+          "Data"
+        ],
+        "description": "Endpoint to save data from gateway",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/api/data/getdata/{API}": {
+      "post": {
+        "tags": [
+          "Data"
+        ],
+        "description": "Endpoint to get data by API device",
+        "parameters": [
+          {
+            "name": "API",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           },
           "500": {
             "description": "Internal Server Error"
@@ -673,6 +856,70 @@
           },
           "500": {
             "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/sensor/getSensor/{API}": {
+      "post": {
+        "tags": [
+          "Sensor"
+        ],
+        "description": "Endpoint to get sensor",
+        "parameters": [
+          {
+            "name": "API",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/sensor/getallSensor/{API}": {
+      "post": {
+        "tags": [
+          "Sensor"
+        ],
+        "description": "Endpoint to get all sensor",
+        "parameters": [
+          {
+            "name": "API",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
         }
       }

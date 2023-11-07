@@ -7,7 +7,7 @@ var jwt = require('jsonwebtoken')
 var midleware = require('../midleWare')
 var {makeid} = require('../generate_apiKey')
 
-data_router.get('/sendData', async (req, res) => {
+data_router.get('/sendData1', async (req, res) => {
   /* 	#swagger.tags = ['Data']
     #swagger.description = 'Endpoint to save data from device' */
     try {
@@ -44,7 +44,26 @@ data_router.get('/sendData', async (req, res) => {
     }
   });
 
+data_router.post('/sendData2', midleware.authenToken, async (req, res) => {
+  /* 	#swagger.tags = ['Data']
+      #swagger.description = 'Endpoint to save data from gateway' */
+})
 
+data_router.post('/getdata/:API', midleware.authenToken, async (req, res) => {
+  /* 	#swagger.tags = ['Data']
+      #swagger.description = 'Endpoint to get data by API device' */
+      const Token = req.header('authorization')
+    jwt.verify(Token,process.env.ACCESS_TOKEN_SECRET,async (err,data)=>{
+        try {
+        const API = req.params.API;
+        var data = await Data.findOne({API})
+        console.log(data)
+        res.json(data)
+    } catch (error) {
+        res.status(500).json({ error: 'Lỗi khi lay data.' });
+    }
+    })
+})
 
 
   module.exports = data_router
