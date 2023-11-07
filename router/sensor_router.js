@@ -118,4 +118,26 @@ sensor_router.put('/updateSensor/:API', midleware.authenToken,(req,res)=>{
     })
 })
 
+
+sensor_router.post('/getSensor/:API', midleware.authenToken, async (req, res) => {
+    /* 	#swagger.tags = ['Sensor']
+        #swagger.description = 'Endpoint to get sensor' */
+        const Token = req.header('authorization')
+        jwt.verify(Token,process.env.ACCESS_TOKEN_SECRET,async (err,data)=>{
+            try {
+            const API = req.params.API;
+            var sensor = await Sensor.findOne({API})
+            console.log(sensor)
+            res.json(sensor)
+        } catch (error) {
+            res.status(500).json({ error: 'Lỗi khi lay dữ liệu cam bien.' });
+        }
+        })   
+})
+
+sensor_router.post('/getallSensor/:API', midleware.authenToken, async (req, res) => {
+    /* 	#swagger.tags = ['Sensor']
+        #swagger.description = 'Endpoint to get all sensor' */
+})
+
 module.exports = sensor_router

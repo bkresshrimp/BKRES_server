@@ -124,6 +124,25 @@ device_router.put('/updateDevice/:API', midleware.authenToken,(req,res)=>{
     })
 })
 
+device_router.post('/getDevice/:API', midleware.authenToken, async (req, res) => {
+    /* 	#swagger.tags = ['Device']
+        #swagger.description = 'Endpoint to get device' */
+        const Token = req.header('authorization')
+    jwt.verify(Token,process.env.ACCESS_TOKEN_SECRET,async (err,data)=>{
+        try {
+        const API = req.params.API;
+        var device = await Device.findOne({API})
+        console.log(device)
+        res.json(device)
+    } catch (error) {
+        res.status(500).json({ error: 'Lỗi khi lay dữ liệu device.' });
+    }
+    })
+})
 
+device_router.post('/getallDevice/:API', midleware.authenToken, async (req, res) => {
+    /* 	#swagger.tags = ['Device']
+        #swagger.description = 'Endpoint to get all device' */
+})
 
 module.exports = device_router
