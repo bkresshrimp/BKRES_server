@@ -145,6 +145,33 @@
             "name": "authorization",
             "in": "header",
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "page": {
+                  "example": "any"
+                },
+                "limit": {
+                  "example": "any"
+                },
+                "sortBy": {
+                  "example": "any"
+                },
+                "sortOrder": {
+                  "example": "any"
+                },
+                "filterKey": {
+                  "example": "any"
+                },
+                "filterValue": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -218,6 +245,24 @@
             "name": "authorization",
             "in": "header",
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "any"
+                },
+                "account": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -554,9 +599,6 @@
                   "example": "any"
                 },
                 "lon": {
-                  "example": "any"
-                },
-                "updatedData": {
                   "example": "any"
                 }
               }

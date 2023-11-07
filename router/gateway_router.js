@@ -91,8 +91,7 @@ gateway_router.put('/updateGateway/:API', midleware.authenToken, async (req, res
     jwt.verify(Token, process.env.ACCESS_TOKEN_SECRET,async(err,data)=>{
     try {
         const API = req.params.API;
-        const gatewayName= req.body.gateway_name;
-        const { lat, lon, ...updatedData } = req.body;
+        const { gateway_name, lat, lon } = req.body;
 
         const gateway = await Gateway.findOne({ API });
 
@@ -100,16 +99,15 @@ gateway_router.put('/updateGateway/:API', midleware.authenToken, async (req, res
             return res.status(404).json({ error: 'Gateway không tồn tại.' });
         }
 
+        if (gateway_name) {
+            gateway.gateway_name = gateway_name;
+        }
+
         if (lat && lon) {
             gateway.location = [{ lat, lon }];
         }
 
-        Object.keys(updatedData).forEach((key) => {
-            gateway[key] = updatedData[key];
-        });
-
         await gateway.save(); 
-        console.log(gatewayName)
 
         res.status(200).json({ message: 'Dữ liệu gateway đã được cập nhật thành công.' });
     } catch (error) {

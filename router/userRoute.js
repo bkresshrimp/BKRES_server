@@ -106,12 +106,34 @@ user_router.post('/get_alluser', midleWare.authenToken, async (req, res) => {
 
         if (userRole === 'admin') {
             try {
-                const allUsers = await User.find();
+                // Khai báo các tham số cho phân trang, filter và sort
+                const { page = 1, limit = 10, sortBy = 'createdAt', sortOrder = 'desc', filterKey, filterValue } = req.body;
+
+                let filterCriteria = {};
+
+                // Thêm điều kiện lọc nếu được cung cấp
+                if (filterKey && filterValue) {
+                    filterCriteria[filterKey] = filterValue;
+                }
+
+                const sortQuery = {};
+                sortQuery[sortBy] = sortOrder === 'asc' ? 1 : -1;
+
+                // Tính toán skip (bỏ qua) cho phân trang
+                const skip = (page - 1) * limit;
+
+                // Truy vấn cơ sở dữ liệu với phân trang, lọc và sắp xếp
+                const allUsers = await User.find(filterCriteria)
+                    .sort(sortQuery)
+                    .skip(skip)
+                    .limit(limit);
+
+                const totalCount = await User.countDocuments(filterCriteria);
 
                 return res.status(200).json({
                     success: true,
                     data: {
-                        total: allUsers.length,
+                        total: totalCount,
                         users: allUsers,
                     },
                 });
@@ -124,6 +146,7 @@ user_router.post('/get_alluser', midleWare.authenToken, async (req, res) => {
         }
     });
 });
+
 
 
 
@@ -154,33 +177,41 @@ user_router.delete('/deleteuser/:User_key', midleWare.authenToken,(req,res)=>{
 })
 
 
-
-user_router.put('/updateUser/:User_key', midleWare.authenToken,(req,res)=>{
-/* 	#swagger.tags = ['User']
+user_router.put('/updateUser/:User_key', midleWare.authenToken, async (req, res) => {
+    /* #swagger.tags = ['User']
     #swagger.description = 'Endpoint to update user' */
-    const Token = req.header('authorization')
-    jwt.verify(Token,process.env.ACCESS_TOKEN_SECRET,async (err,data)=>{
-    try {
-      const User_key = req.params.User_key; 
-      const updatedData = req.body;
-  
-      // Kiểm tra xem người dùng có tồn tại không
-      const user = await User.findOne({ User_key });
-  
-      if (!user) {
-        res.status(404).json({ error: 'Người dùng không tồn tại.' });
-        return;
-      }
-      console.log(updatedData)
-      // Cập nhật dữ liệu người dùng
-      await User.updateOne({ User_key }, updatedData);
-  
-      res.status(200).json({ message: 'Dữ liệu người dùng đã được cập nhật thành công.' });
-    } catch (error) {
-      res.status(500).json({ error: 'Lỗi khi cập nhật dữ liệu người dùng.' });
-    }
-    })
-})
+    const Token = req.header('authorization');
+    jwt.verify(Token, process.env.ACCESS_TOKEN_SECRET, async (err, data) => {
+        try {
+            const User_key = req.params.User_key;
+            const { name, account, email } = req.body;
+
+            // Kiểm tra xem người dùng có tồn tại không
+            const user = await User.findOne({ User_key });
+
+            if (!user) {
+                return res.status(404).json({ error: 'Người dùng không tồn tại.' });
+            }
+
+            // Cập nhật dữ liệu người dùng chỉ với các trường được cung cấp
+            if (name) {
+                user.name = name;
+            }
+            if (account) {
+                user.account = account;
+            }
+            if (email) {
+                user.email = email;
+            }
+
+            await user.save();
+
+            res.status(200).json({ message: 'Dữ liệu người dùng đã được cập nhật thành công.' });
+        } catch (error) {
+            res.status(500).json({ error: 'Lỗi khi cập nhật dữ liệu người dùng.' });
+        }
+    });
+});
 
 
 
