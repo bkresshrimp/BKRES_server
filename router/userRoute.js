@@ -102,12 +102,10 @@ user_router.post('/get_alluser', midleWare.authenToken, async (req, res) => {
             return res.status(401).json({ success: false, message: "Token không hợp lệ" });
         }
 
-        // Kiểm tra vai trò của người dùng từ dữ liệu sau khi giải mã token
-        const userRole = data.role; // Giả sử role được lưu trong dữ liệu giải mã từ token
+        const userRole = data.role; 
 
         if (userRole === 'admin') {
             try {
-                // Nếu là admin, lấy tất cả người dùng từ cơ sở dữ liệu
                 const allUsers = await User.find();
 
                 return res.status(200).json({

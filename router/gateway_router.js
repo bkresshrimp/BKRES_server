@@ -118,7 +118,31 @@ gateway_router.put('/updateGateway/:API', midleware.authenToken, async (req, res
     })
 })
 
+gateway_router.post('/getGateway/:API', midleware.authenToken, async (req, res) => {
+    /* 	#swagger.tags = ['Gateway']
+        #swagger.description = 'Endpoint to get gateway' */
+    const Token = req.header('authorization')
+    jwt.verify(Token,process.env.ACCESS_TOKEN_SECRET,async (err,data)=>{
+        try {
+        const API = req.params.API;
+        var gateway = await Gateway.findOne({API})
+        console.log(gateway)
+        res.json(gateway)
+    } catch (error) {
+        res.status(500).json({ error: 'Lỗi khi lay dữ liệu gateway.' });
+    }
+    })
 
+})
+
+gateway_router.post('/getallGateway', midleware.authenToken, async (req, res) => {
+    /* 	#swagger.tags = ['Gateway']
+        #swagger.description = 'Endpoint to get all gateway' */
+        const Token = req.header('authorization')
+        jwt.verify(Token,process.env.ACCESS_TOKEN_SECRET,async (err,data)=>{
+            
+        })    
+})
 
 
 module.exports = gateway_router
