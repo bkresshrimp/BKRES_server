@@ -121,7 +121,7 @@ gateway_router.post('/getGateway/:API', midleware.authenToken, async (req, res) 
         #swagger.description = 'Endpoint to get gateway' */
     const Token = req.header('authorization')
     jwt.verify(Token,process.env.ACCESS_TOKEN_SECRET,async (err,data)=>{
-        try {
+    try {
         const API = req.params.API;
         var gateway = await Gateway.findOne({API})
         console.log(gateway)

@@ -98,18 +98,34 @@ sensor_router.put('/updateSensor/:API', midleware.authenToken,(req,res)=>{
     jwt.verify(Token,process.env.ACCESS_TOKEN_SECRET,async (err,data)=>{
     try {
       const API = req.params.API; 
-      const updatedData = req.body;
-  
-      // Kiểm tra xem sensor có tồn tại không
+      const { sensor_name, device_id, provider, unit, describe } = req.body;
+
       const sensor = await Sensor.findOne({ API });
-  
-      if (!sensor) {
-        res.status(404).json({ error: 'Cam bien không tồn tại.' });
-        return;
-      }
-      console.log(updatedData)
-      // Cập nhật dữ liệu cam bien
-      await Sensor.updateOne({ API }, updatedData);
+        if (!sensor) {
+            return res.status(404).json({ error: 'cam bien không tồn tại.' });
+        }
+
+        if (sensor_name) {
+            sensor.sensor_name = sensor_name;
+        }
+
+        if (device_id) {
+            sensor.device_id = device_id;
+        }
+
+        if (provider) {
+            sensor.provider = provider;
+        }
+
+        if (unit) {
+            sensor.unit = unit;
+        }
+
+        if (describe) {
+            sensor.describe = describe;
+        }
+
+        await sensor.save();
   
       res.status(200).json({ message: 'Dữ liệu cam bien đã được cập nhật thành công.' });
     } catch (error) {
@@ -124,7 +140,7 @@ sensor_router.post('/getSensor/:API', midleware.authenToken, async (req, res) =>
         #swagger.description = 'Endpoint to get sensor' */
         const Token = req.header('authorization')
         jwt.verify(Token,process.env.ACCESS_TOKEN_SECRET,async (err,data)=>{
-            try {
+        try {
             const API = req.params.API;
             var sensor = await Sensor.findOne({API})
             console.log(sensor)

@@ -54,7 +54,7 @@ data_router.post('/getdata/:API', midleware.authenToken, async (req, res) => {
       #swagger.description = 'Endpoint to get data by API device' */
       const Token = req.header('authorization')
     jwt.verify(Token,process.env.ACCESS_TOKEN_SECRET,async (err,data)=>{
-        try {
+    try {
         const API = req.params.API;
         var data = await Data.findOne({API})
         console.log(data)

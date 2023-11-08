@@ -398,6 +398,24 @@
             "name": "authorization",
             "in": "header",
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "device_name": {
+                  "example": "any"
+                },
+                "device_id": {
+                  "example": "any"
+                },
+                "device_ip": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -881,6 +899,30 @@
             "name": "authorization",
             "in": "header",
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "sensor_name": {
+                  "example": "any"
+                },
+                "device_id": {
+                  "example": "any"
+                },
+                "provider": {
+                  "example": "any"
+                },
+                "unit": {
+                  "example": "any"
+                },
+                "describe": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
         "responses": {

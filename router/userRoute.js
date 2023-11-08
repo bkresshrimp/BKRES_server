@@ -170,7 +170,7 @@ user_router.delete('/deleteuser/:User_key', midleWare.authenToken,(req,res)=>{
             await User.findOneAndRemove({ User_key });
         
             res.status(200).json({ message: 'Người dùng đã được xóa thành công.' });
-          } catch (error) {
+        } catch (error) {
             res.status(500).json({ error: 'Lỗi khi xóa người dùng.' });
           }
     })

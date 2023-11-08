@@ -104,18 +104,26 @@ device_router.put('/updateDevice/:API', midleware.authenToken,(req,res)=>{
     jwt.verify(Token,process.env.ACCESS_TOKEN_SECRET,async (err,data)=>{
     try {
       const API = req.params.API; 
-      const updatedData = req.body;
-  
-      // Kiểm tra xem device có tồn tại không
+      const { device_name, device_id, device_ip } = req.body;
+
       const device = await Device.findOne({ API });
-  
-      if (!device) {
-        res.status(404).json({ error: 'Thiet bi không tồn tại.' });
-        return;
-      }
-      console.log(updatedData)
-      // Cập nhật dữ liệu thiet bi
-      await Device.updateOne({ API }, updatedData);
+        if (!device) {
+            return res.status(404).json({ error: 'Thiet bi không tồn tại.' });
+        }
+
+        if (device_name) {
+            device.device_name = device_name;
+        }
+
+        if (device_id) {
+            device.device_id = device_id;
+        }
+
+        if (device_ip) {
+            device.device_ip = device_ip;
+        }
+
+        await device.save(); 
   
       res.status(200).json({ message: 'Dữ liệu thiet bi đã được cập nhật thành công.' });
     } catch (error) {
@@ -129,7 +137,7 @@ device_router.post('/getDevice/:API', midleware.authenToken, async (req, res) =>
         #swagger.description = 'Endpoint to get device' */
         const Token = req.header('authorization')
     jwt.verify(Token,process.env.ACCESS_TOKEN_SECRET,async (err,data)=>{
-        try {
+    try {
         const API = req.params.API;
         var device = await Device.findOne({API})
         console.log(device)
