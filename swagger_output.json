@@ -306,13 +306,10 @@
             "schema": {
               "type": "object",
               "properties": {
-                "gateway_name": {
+                "gateway_API": {
                   "example": "any"
                 },
                 "device_name": {
-                  "example": "any"
-                },
-                "device_id": {
                   "example": "any"
                 },
                 "device_ip": {
@@ -324,7 +321,7 @@
                 "mess_in_minute": {
                   "example": "any"
                 },
-                "is_block": {
+                "is_public": {
                   "example": "any"
                 },
                 "time_interval": {
@@ -347,7 +344,7 @@
         }
       }
     },
-    "/api/device/deletedevice/{API}": {
+    "/api/device/deletedevice/{device_API}": {
       "delete": {
         "tags": [
           "Device"
@@ -355,7 +352,7 @@
         "description": "Endpoint to delete device",
         "parameters": [
           {
-            "name": "API",
+            "name": "device_API",
             "in": "path",
             "required": true,
             "type": "string"
@@ -385,7 +382,7 @@
         }
       }
     },
-    "/api/device/updateDevice/{API}": {
+    "/api/device/updateDevice/{device_API}": {
       "put": {
         "tags": [
           "Device"
@@ -393,7 +390,7 @@
         "description": "Endpoint to update device",
         "parameters": [
           {
-            "name": "API",
+            "name": "device_API",
             "in": "path",
             "required": true,
             "type": "string"
@@ -412,10 +409,10 @@
                 "device_name": {
                   "example": "any"
                 },
-                "device_id": {
+                "device_ip": {
                   "example": "any"
                 },
-                "device_ip": {
+                "is_public": {
                   "example": "any"
                 }
               }
@@ -441,7 +438,7 @@
         }
       }
     },
-    "/api/device/getDevice/{API}": {
+    "/api/device/getDevice/{device_API}": {
       "post": {
         "tags": [
           "Device"
@@ -449,7 +446,7 @@
         "description": "Endpoint to get device",
         "parameters": [
           {
-            "name": "API",
+            "name": "device_API",
             "in": "path",
             "required": true,
             "type": "string"
@@ -476,7 +473,7 @@
         }
       }
     },
-    "/api/device/getallDevice/{API}": {
+    "/api/device/getallDevice": {
       "post": {
         "tags": [
           "Device"
@@ -484,23 +481,57 @@
         "description": "Endpoint to get all device",
         "parameters": [
           {
-            "name": "API",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
             "name": "authorization",
             "in": "header",
             "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "gateway_API": {
+                  "example": "any"
+                },
+                "sortBy": {
+                  "example": "any"
+                },
+                "sortOrder": {
+                  "example": "any"
+                },
+                "filterKey": {
+                  "example": "any"
+                },
+                "filterValue": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "401": {
             "description": "Unauthorized"
           },
           "403": {
             "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -552,7 +583,7 @@
         }
       }
     },
-    "/api/gateway/deletegateway/{API}": {
+    "/api/gateway/deletegateway/{gateway_API}": {
       "delete": {
         "tags": [
           "Gateway"
@@ -560,7 +591,7 @@
         "description": "Endpoint to delete gateway",
         "parameters": [
           {
-            "name": "API",
+            "name": "gateway_API",
             "in": "path",
             "required": true,
             "type": "string"
@@ -590,7 +621,7 @@
         }
       }
     },
-    "/api/gateway/updateGateway/{API}": {
+    "/api/gateway/updateGateway/{gateway_API}": {
       "put": {
         "tags": [
           "Gateway"
@@ -598,7 +629,7 @@
         "description": "Endpoint to update gateway",
         "parameters": [
           {
-            "name": "API",
+            "name": "gateway_API",
             "in": "path",
             "required": true,
             "type": "string"
@@ -646,7 +677,7 @@
         }
       }
     },
-    "/api/gateway/getGateway/{API}": {
+    "/api/gateway/getGateway/{gateway_API}": {
       "post": {
         "tags": [
           "Gateway"
@@ -654,7 +685,7 @@
         "description": "Endpoint to get gateway",
         "parameters": [
           {
-            "name": "API",
+            "name": "gateway_API",
             "in": "path",
             "required": true,
             "type": "string"
@@ -749,7 +780,7 @@
         "description": "Endpoint to save data from device",
         "parameters": [
           {
-            "name": "API",
+            "name": "sensor_API",
             "in": "query",
             "type": "string"
           },
@@ -853,7 +884,7 @@
             "schema": {
               "type": "object",
               "properties": {
-                "device_id": {
+                "device_API": {
                   "example": "any"
                 },
                 "sensor_name": {
@@ -885,7 +916,7 @@
         }
       }
     },
-    "/api/sensor/deletesensor/{API}": {
+    "/api/sensor/deletesensor/{sensor_API}": {
       "delete": {
         "tags": [
           "Sensor"
@@ -893,7 +924,7 @@
         "description": "Endpoint to delete sensor",
         "parameters": [
           {
-            "name": "API",
+            "name": "sensor_API",
             "in": "path",
             "required": true,
             "type": "string"
@@ -923,7 +954,7 @@
         }
       }
     },
-    "/api/sensor/updateSensor/{API}": {
+    "/api/sensor/updateSensor/{sensor_API}": {
       "put": {
         "tags": [
           "Sensor"
@@ -931,7 +962,7 @@
         "description": "Endpoint to update sensor",
         "parameters": [
           {
-            "name": "API",
+            "name": "sensor_API",
             "in": "path",
             "required": true,
             "type": "string"
@@ -950,7 +981,7 @@
                 "sensor_name": {
                   "example": "any"
                 },
-                "device_id": {
+                "device_API": {
                   "example": "any"
                 },
                 "provider": {
@@ -985,7 +1016,7 @@
         }
       }
     },
-    "/api/sensor/getSensor/{API}": {
+    "/api/sensor/getSensor/{sensor_API}": {
       "post": {
         "tags": [
           "Sensor"
@@ -993,7 +1024,7 @@
         "description": "Endpoint to get sensor",
         "parameters": [
           {
-            "name": "API",
+            "name": "sensor_API",
             "in": "path",
             "required": true,
             "type": "string"
@@ -1020,7 +1051,7 @@
         }
       }
     },
-    "/api/sensor/getallSensor/{API}": {
+    "/api/sensor/getallSensor": {
       "post": {
         "tags": [
           "Sensor"
@@ -1028,23 +1059,57 @@
         "description": "Endpoint to get all sensor",
         "parameters": [
           {
-            "name": "API",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
             "name": "authorization",
             "in": "header",
             "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "device_API": {
+                  "example": "any"
+                },
+                "sortBy": {
+                  "example": "any"
+                },
+                "sortOrder": {
+                  "example": "any"
+                },
+                "filterKey": {
+                  "example": "any"
+                },
+                "filterValue": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "401": {
             "description": "Unauthorized"
           },
           "403": {
             "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }

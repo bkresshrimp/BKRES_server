@@ -187,7 +187,7 @@ device_router.post('/getallDevice', midleware.authenToken, async (req, res) => {
                         .limit(limit);
                     totalCount = await Device.countDocuments(filterCriteria);
                 } else {
-                    // Nếu không phải admin, lấy các device của gateway và các device của gateway có is_public=true
+                    // Nếu không phải admin, lấy các device của gateway và các device có is_public=true
                     const deviceGateways = await Device.find({ gateway_API });
                     const publicDevices = await Device.find({ 'is_public': true });
     

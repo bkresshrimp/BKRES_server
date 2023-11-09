@@ -156,6 +156,50 @@ sensor_router.post('/getSensor/:sensor_API', midleware.authenToken, async (req, 
 sensor_router.post('/getallSensor', midleware.authenToken, async (req, res) => {
     /* 	#swagger.tags = ['Sensor']
         #swagger.description = 'Endpoint to get all sensor' */
+        const Token = req.header('authorization');
+
+        // Xác thực token
+        jwt.verify(Token, process.env.ACCESS_TOKEN_SECRET, async (err, data) => {
+            if (err) {
+                return res.status(401).json({ success: false, message: "Token không hợp lệ" });
+            }
+    
+            try {
+                const { device_API } = req.body.device_API; 
+                // Khai báo các tham số cho phân trang, filter và sort
+                const { page = 1, limit = 10 } = req.query;
+                const { sortBy , sortOrder, filterKey, filterValue } = req.body;
+    
+                let filterCriteria = { device_API };
+    
+                if (filterKey && filterValue) {
+                    filterCriteria[filterKey] = filterValue;
+                }
+    
+                const sortQuery = {};
+                sortQuery[sortBy] = sortOrder === 'asc' ? 1 : -1;
+    
+                const skip = (page - 1) * limit;
+    
+                const sensors = await Sensor.find(filterCriteria)
+                    .sort(sortQuery)
+                    .skip(skip)
+                    .limit(limit);
+    
+                const totalCount = await Sensor.countDocuments(filterCriteria);
+    
+                return res.status(200).json({
+                    success: true,
+                    data: {
+                        total: totalCount,
+                        sensors: sensors,
+                    },
+                });
+            } catch (err) {
+                console.log(err);
+                return res.status(500).json({ success: false, message: "Lỗi Server. Vui lòng thử lại sau" });
+            }
+        });
 })
 
 
