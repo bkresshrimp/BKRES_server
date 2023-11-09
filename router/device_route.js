@@ -67,7 +67,6 @@ device_router.post('/create',midleware.authenToken,async (req,res)=>{
 })
 
 
-
 device_router.delete('/deletedevice/:API', midleware.authenToken,(req,res)=>{
     /* 	#swagger.tags = ['Device']
     #swagger.description = 'Endpoint to delete device' */
@@ -132,6 +131,7 @@ device_router.put('/updateDevice/:API', midleware.authenToken,(req,res)=>{
     })
 })
 
+
 device_router.post('/getDevice/:API', midleware.authenToken, async (req, res) => {
     /* 	#swagger.tags = ['Device']
         #swagger.description = 'Endpoint to get device' */
@@ -148,9 +148,11 @@ device_router.post('/getDevice/:API', midleware.authenToken, async (req, res) =>
     })
 })
 
+
 device_router.post('/getallDevice/:API', midleware.authenToken, async (req, res) => {
     /* 	#swagger.tags = ['Device']
         #swagger.description = 'Endpoint to get all device' */
 })
+
 
 module.exports = device_router

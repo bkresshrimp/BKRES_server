@@ -7,6 +7,7 @@ var jwt = require('jsonwebtoken')
 var midleware = require('../midleWare')
 var {makeid} = require('../generate_apiKey')
 
+
 data_router.get('/sendData1', async (req, res) => {
   /* 	#swagger.tags = ['Data']
     #swagger.description = 'Endpoint to save data from device' */
@@ -42,12 +43,14 @@ data_router.get('/sendData1', async (req, res) => {
     } catch (error) {
       res.status(500).json({ error: 'Lỗi khi lưu dữ liệu từ cảm biến.' });
     }
-  });
+});
+
 
 data_router.post('/sendData2', midleware.authenToken, async (req, res) => {
   /* 	#swagger.tags = ['Data']
       #swagger.description = 'Endpoint to save data from gateway' */
 })
+
 
 data_router.post('/getdata/:API', midleware.authenToken, async (req, res) => {
   /* 	#swagger.tags = ['Data']
@@ -66,4 +69,4 @@ data_router.post('/getdata/:API', midleware.authenToken, async (req, res) => {
 })
 
 
-  module.exports = data_router
+module.exports = data_router

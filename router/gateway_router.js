@@ -54,7 +54,6 @@ gateway_router.post('/create',midleware.authenToken,async (req,res)=>{
 })
 
 
-
 gateway_router.delete('/deletegateway/:API', midleware.authenToken,(req,res)=>{
 /* 	#swagger.tags = ['Gateway']
     #swagger.description = 'Endpoint to delete gateway' */
@@ -116,6 +115,7 @@ gateway_router.put('/updateGateway/:API', midleware.authenToken, async (req, res
     })
 })
 
+
 gateway_router.post('/getGateway/:API', midleware.authenToken, async (req, res) => {
     /* 	#swagger.tags = ['Gateway']
         #swagger.description = 'Endpoint to get gateway' */
@@ -133,14 +133,87 @@ gateway_router.post('/getGateway/:API', midleware.authenToken, async (req, res) 
 
 })
 
+
 gateway_router.post('/getallGateway', midleware.authenToken, async (req, res) => {
-    /* 	#swagger.tags = ['Gateway']
-        #swagger.description = 'Endpoint to get all gateway' */
-        const Token = req.header('authorization')
-        jwt.verify(Token,process.env.ACCESS_TOKEN_SECRET,async (err,data)=>{
-            
-        })    
-})
+    /* #swagger.tags = ['Gateway']
+       #swagger.description = 'Endpoint to get all gateway' */
+    const Token = req.header('authorization');
+
+    // Xác thực token
+    jwt.verify(Token, process.env.ACCESS_TOKEN_SECRET, async (err, data) => {
+        if (err) {
+            return res.status(401).json({ success: false, message: "Token không hợp lệ" });
+        }
+
+        const userRole = data.role;
+
+        try {
+            // Khai báo các tham số cho phân trang, filter và sort
+            const { page = 1, limit = 10 } = req.query;
+            const { sortBy = 'createdAt', sortOrder = 'desc', filterKey, filterValue } = req.body;
+
+            let filterCriteria = {};
+
+            // Thêm điều kiện lọc nếu được cung cấp
+            if (filterKey && filterValue) {
+                filterCriteria[filterKey] = filterValue;
+            }
+
+            const sortQuery = {};
+            sortQuery[sortBy] = sortOrder === 'asc' ? 1 : -1;
+
+            let allGateways;
+            let totalCount;
+
+            if (userRole === 'admin') {
+                // Nếu là admin, lấy toàn bộ các gateway
+                allGateways = await Gateway.find(filterCriteria)
+                    .sort(sortQuery)
+                    .skip((page - 1) * limit)
+                    .limit(limit);
+                totalCount = await Gateway.countDocuments(filterCriteria);
+            } else {
+                // Nếu không phải admin, lấy các gateway của người dùng và các gateway có is_public: true
+                const userGateways = await Gateway.find({ 'User_key': data.User_key });
+                const publicGateways = await Gateway.find({ 'is_public': true });
+
+                allGateways = userGateways.concat(publicGateways);
+
+                // Filter và sort các gateway như yêu cầu
+                allGateways = allGateways
+                    .filter(gateway => {
+                        // Lọc các gateway theo các điều kiện nếu được cung cấp
+                        if (filterKey && filterValue) {
+                            return gateway[filterKey] === filterValue;
+                        }
+                        return true;
+                    })
+                    .sort((a, b) => {
+                        if (sortOrder === 'asc') {
+                            return a[sortBy] > b[sortBy] ? 1 : -1;
+                        } else {
+                            return a[sortBy] < b[sortBy] ? 1 : -1;
+                        }
+                    })
+                    .slice((page - 1) * limit, page * limit);
+
+                totalCount = allGateways.length;
+            }
+
+            return res.status(200).json({
+                success: true,
+                data: {
+                    total: totalCount,
+                    gateways: allGateways,
+                },
+            });
+
+        } catch (err) {
+            console.log(err);
+            return res.status(500).json({ success: false, message: "Lỗi Server. Vui lòng thử lại sau" });
+        }
+    });
+});
 
 
 module.exports = gateway_router

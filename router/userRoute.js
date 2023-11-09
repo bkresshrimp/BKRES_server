@@ -10,7 +10,6 @@ var {makeid} = require('../generate_apiKey')
 dotenv.config()
 
 
-
 user_router.post('/login',async (req,res)=>{
     /* 	#swagger.tags = ['User']
     #swagger.description = 'Endpoint to login in a specific user' */
@@ -25,7 +24,6 @@ user_router.post('/login',async (req,res)=>{
         
     })
 })
-
 
 
 user_router.post('/register', async (req, res) => {
@@ -79,7 +77,6 @@ user_router.post('/register', async (req, res) => {
 });
 
 
-
 user_router.post('/get_user',midleWare.authenToken,(req,res)=>{
     /* 	#swagger.tags = ['User']
     #swagger.description = 'Endpoint to get user' */
@@ -89,6 +86,7 @@ user_router.post('/get_user',midleWare.authenToken,(req,res)=>{
         res.json(user)
     })    
 })
+
 
 user_router.post('/get_alluser', midleWare.authenToken, async (req, res) => {
     /* 	#swagger.tags = ['User']
@@ -107,7 +105,8 @@ user_router.post('/get_alluser', midleWare.authenToken, async (req, res) => {
         if (userRole === 'admin') {
             try {
                 // Khai báo các tham số cho phân trang, filter và sort
-                const { page = 1, limit = 10, sortBy = 'createdAt', sortOrder = 'desc', filterKey, filterValue } = req.body;
+                const {page = 1, limit = 10}=req.query;
+                const { sortBy = 'createdAt', sortOrder = 'desc', filterKey, filterValue } = req.body;
 
                 let filterCriteria = {};
 
@@ -146,8 +145,6 @@ user_router.post('/get_alluser', midleWare.authenToken, async (req, res) => {
         }
     });
 });
-
-
 
 
 user_router.delete('/deleteuser/:User_key', midleWare.authenToken,(req,res)=>{
@@ -212,13 +209,6 @@ user_router.put('/updateUser/:User_key', midleWare.authenToken, async (req, res)
         }
     });
 });
-
-
-
-
-
-
-
 
 
 module.exports = user_router

@@ -91,6 +91,7 @@ sensor_router.delete('/deletesensor/:API', midleware.authenToken,(req,res)=>{
     })
 })
 
+
 sensor_router.put('/updateSensor/:API', midleware.authenToken,(req,res)=>{
     /* 	#swagger.tags = ['Sensor']
     #swagger.description = 'Endpoint to update sensor' */
@@ -151,9 +152,11 @@ sensor_router.post('/getSensor/:API', midleware.authenToken, async (req, res) =>
         })   
 })
 
+
 sensor_router.post('/getallSensor/:API', midleware.authenToken, async (req, res) => {
     /* 	#swagger.tags = ['Sensor']
         #swagger.description = 'Endpoint to get all sensor' */
 })
+
 
 module.exports = sensor_router
