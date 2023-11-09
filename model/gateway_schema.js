@@ -4,9 +4,12 @@ var gateway_schema = new mongoose.Schema({
         type: String,
         required: true
     },
-    API:{
+    gateway_API:{
         type:String,
         required: true
+    },
+    User_key:{
+        type:String,       
     },
     location:[{
         lat: String,

@@ -1,6 +1,6 @@
 const mongose = require("mongoose");
 var sensor_schema = new mongose.Schema({
-    device_id:{
+    device_API:{
         type: String,
         require: true
     },
@@ -8,7 +8,7 @@ var sensor_schema = new mongose.Schema({
         type: String,
         require: true
     },
-    API:{
+    sensor_API:{
         type: String,
         require: true
     },

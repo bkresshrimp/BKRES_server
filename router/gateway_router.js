@@ -22,12 +22,13 @@ gateway_router.post('/create',midleware.authenToken,async (req,res)=>{
             console.log(lat,lon)
             var gateway = new Gateway({
                 gateway_name: req.body.gateway_name,
+                User_key: user.User_key,
                 location:[{
                     lat: lat,
                     lon: lon,    
                 }],
                 is_public : req.body.is_public || false,
-                API :Api ,       
+                gateway_API :Api ,       
             })
             console.log(gateway)
             gateway.save((err)=>{
@@ -54,16 +55,16 @@ gateway_router.post('/create',midleware.authenToken,async (req,res)=>{
 })
 
 
-gateway_router.delete('/deletegateway/:API', midleware.authenToken,(req,res)=>{
+gateway_router.delete('/deletegateway/:gateway_API', midleware.authenToken,(req,res)=>{
 /* 	#swagger.tags = ['Gateway']
     #swagger.description = 'Endpoint to delete gateway' */
     const Token = req.header('authorization')
     jwt.verify(Token,process.env.ACCESS_TOKEN_SECRET,async (err,data)=>{
         try {
-            const API = req.params.API; 
+            const gateway_API = req.params.gateway_API; 
         
             // Kiểm tra xem gateway có tồn tại không
-            const gateway = await Gateway.findOne({ API });
+            const gateway = await Gateway.findOne({ gateway_API });
         
             if (!gateway) {
               res.status(404).json({ error: 'Gateway không tồn tại.' });
@@ -71,8 +72,8 @@ gateway_router.delete('/deletegateway/:API', midleware.authenToken,(req,res)=>{
             }
         
             // Xóa gateway khỏi cơ sở dữ liệu
-            await Gateway.findOneAndRemove({ API });                
-            User.updateOne({email:data.email},{$pull:{gateway:{API:API}}},{multi:true},(err)=>{
+            await Gateway.findOneAndRemove({ gateway_API });                
+            User.updateOne({email:data.email},{$pull:{gateway:{gateway_API:gateway_API}}},{multi:true},(err)=>{
                 if(!err) res.json({success:"success"})
             })
 
@@ -83,16 +84,16 @@ gateway_router.delete('/deletegateway/:API', midleware.authenToken,(req,res)=>{
 })
 
 
-gateway_router.put('/updateGateway/:API', midleware.authenToken, async (req, res) => {
+gateway_router.put('/updateGateway/:gateway_API', midleware.authenToken, async (req, res) => {
 /* 	#swagger.tags = ['Gateway']
     #swagger.description = 'Endpoint to update gateway' */
     const Token = req.header('authorization')
     jwt.verify(Token, process.env.ACCESS_TOKEN_SECRET,async(err,data)=>{
     try {
-        const API = req.params.API;
+        const gateway_API = req.params.gateway_API;
         const { gateway_name, lat, lon } = req.body;
 
-        const gateway = await Gateway.findOne({ API });
+        const gateway = await Gateway.findOne({ gateway_API });
 
         if (!gateway) {
             return res.status(404).json({ error: 'Gateway không tồn tại.' });
@@ -116,14 +117,14 @@ gateway_router.put('/updateGateway/:API', midleware.authenToken, async (req, res
 })
 
 
-gateway_router.post('/getGateway/:API', midleware.authenToken, async (req, res) => {
+gateway_router.post('/getGateway/:gateway_API', midleware.authenToken, async (req, res) => {
     /* 	#swagger.tags = ['Gateway']
         #swagger.description = 'Endpoint to get gateway' */
     const Token = req.header('authorization')
     jwt.verify(Token,process.env.ACCESS_TOKEN_SECRET,async (err,data)=>{
     try {
-        const API = req.params.API;
-        var gateway = await Gateway.findOne({API})
+        const gateway_API = req.params.gateway_API;
+        var gateway = await Gateway.findOne({gateway_API})
         console.log(gateway)
         res.json(gateway)
     } catch (error) {

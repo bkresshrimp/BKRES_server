@@ -10,12 +10,12 @@ data_router.get('/sendData1', async (req, res) => {
   /* 	#swagger.tags = ['Data']
     #swagger.description = 'Endpoint to save data from device' */
     try {
-      const API = req.query.API;
+      const sensor_API = req.query.sensor_API;
       const data = req.query.data;
       const time = req.query.time;
   
       // Kiểm tra xem cảm biến có tồn tại không
-      const sensor = await Sensor.findOne({ API });
+      const sensor = await Sensor.findOne({ sensor_API });
   
       if (!sensor) {
         res.status(404).json({ error: 'cảm biến không tồn tại.' });
@@ -56,8 +56,8 @@ data_router.post('/getdata/:API', midleware.authenToken, async (req, res) => {
       const Token = req.header('authorization')
     jwt.verify(Token,process.env.ACCESS_TOKEN_SECRET,async (err,data)=>{
     try {
-        const API = req.params.API;
-        var data = await Data.findOne({API})
+        const sensor_API = req.params.sensor_API;
+        var data = await Data.findOne({sensor_API})
         console.log(data)
         res.json(data)
     } catch (error) {

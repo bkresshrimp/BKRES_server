@@ -4,7 +4,7 @@ var device_schema = new mongose.Schema({
         type: String,
         require: true
     },
-    device_id:{
+    device_API:{
         type: String,
         require: true
     },
@@ -12,7 +12,7 @@ var device_schema = new mongose.Schema({
         type: String,
         require: true
     },
-    API:{
+    gateway_API:{
         type:String,
         required: true
     },
@@ -26,7 +26,7 @@ var device_schema = new mongose.Schema({
         require: false,
         default: 0
     },
-    is_block:{
+    is_public:{
         type: Boolean,
         require: false,
         default: false
