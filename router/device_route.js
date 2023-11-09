@@ -1,6 +1,5 @@
 var express = require('express')
 var device_router = express.Router()
-
 var Device = require('../model/device_schema')
 var Gateway = require('../model/gateway_schema')
 var jwt = require('jsonwebtoken')

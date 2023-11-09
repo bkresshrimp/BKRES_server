@@ -1,11 +1,9 @@
 var express = require('express')
 var data_router = express.Router()
-
 var Sensor = require('../model/sensor_schema')
 var Data = require('../model/data_schema')
 var jwt = require('jsonwebtoken')
 var midleware = require('../midleWare')
-var {makeid} = require('../generate_apiKey')
 
 
 data_router.get('/sendData1', async (req, res) => {
