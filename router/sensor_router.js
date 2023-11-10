@@ -165,7 +165,7 @@ sensor_router.post('/getallSensor', midleware.authenToken, async (req, res) => {
             }
     
             try {
-                const { device_API } = req.body.device_API; 
+                const { device_API } = req.query.device_API; 
                 // Khai báo các tham số cho phân trang, filter và sort
                 const { page = 1, limit = 10 } = req.query;
                 const { sortBy , sortOrder, filterKey, filterValue } = req.body;

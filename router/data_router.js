@@ -10,9 +10,8 @@ data_router.get('/sendData1', async (req, res) => {
   /* 	#swagger.tags = ['Data']
     #swagger.description = 'Endpoint to save data from device' */
     try {
-      const sensor_API = req.query.sensor_API;
-      const data = req.query.data;
-      const time = req.query.time;
+      const { device_API, time, ...sensorData } = req.query;
+      const data = Object.entries(sensorData).map(([sensor_API, data]) => ({ sensor_API, data, time }));
   
       // Kiểm tra xem cảm biến có tồn tại không
       const sensor = await Sensor.findOne({ sensor_API });
@@ -22,20 +21,17 @@ data_router.get('/sendData1', async (req, res) => {
         return;
       }
       console.log(data)
-      // Lưu dữ liệu từ cảm biến
-      const sensorData = new Data({
-        API,
-        data:[
-          {
-            data:data,
-            time:time
-          }],
+      // Lưu dữ liệu từ thiết bị 
+      const newData = new Data({
+        device_API,
+        sensor_API: Object.keys(sensorData),
+        data,
         last_time,
         isProcess: false
       });
   
       // Lưu dữ liệu từ cảm biến vào cơ sở dữ liệu
-      await sensorData.save();
+      await newData.save();
   
       res.status(201).json({ message: 'Dữ liệu từ cảm biến đã được lưu.' });
     } catch (error) {
@@ -50,7 +46,7 @@ data_router.post('/sendData2', midleware.authenToken, async (req, res) => {
 })
 
 
-data_router.post('/getdata/:API', midleware.authenToken, async (req, res) => {
+data_router.post('/getdata/:sensor_API', midleware.authenToken, async (req, res) => {
   /* 	#swagger.tags = ['Data']
       #swagger.description = 'Endpoint to get data by API device' */
       const Token = req.header('authorization')

@@ -486,6 +486,11 @@
             "type": "string"
           },
           {
+            "name": "gateway_API",
+            "in": "query",
+            "type": "string"
+          },
+          {
             "name": "page",
             "in": "query",
             "type": "string"
@@ -501,9 +506,6 @@
             "schema": {
               "type": "object",
               "properties": {
-                "gateway_API": {
-                  "example": "any"
-                },
                 "sortBy": {
                   "example": "any"
                 },
@@ -780,17 +782,17 @@
         "description": "Endpoint to save data from device",
         "parameters": [
           {
-            "name": "sensor_API",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "data",
+            "name": "device_API",
             "in": "query",
             "type": "string"
           },
           {
             "name": "time",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "sensorData",
             "in": "query",
             "type": "string"
           }
@@ -831,7 +833,7 @@
         }
       }
     },
-    "/api/data/getdata/{API}": {
+    "/api/data/getdata/{sensor_API}": {
       "post": {
         "tags": [
           "Data"
@@ -839,7 +841,7 @@
         "description": "Endpoint to get data by API device",
         "parameters": [
           {
-            "name": "API",
+            "name": "sensor_API",
             "in": "path",
             "required": true,
             "type": "string"
@@ -1064,6 +1066,11 @@
             "type": "string"
           },
           {
+            "name": "device_API",
+            "in": "query",
+            "type": "string"
+          },
+          {
             "name": "page",
             "in": "query",
             "type": "string"
@@ -1079,9 +1086,6 @@
             "schema": {
               "type": "object",
               "properties": {
-                "device_API": {
-                  "example": "any"
-                },
                 "sortBy": {
                   "example": "any"
                 },

@@ -1,5 +1,9 @@
 const mongose = require("mongoose");
 var data_schema = new mongose.Schema({
+    device_API:{
+        type: String,
+        require: true
+    },
     sensor_API:{
         type:String,
         required: true

@@ -158,17 +158,14 @@ device_router.post('/getallDevice', midleware.authenToken, async (req, res) => {
                 return res.status(401).json({ success: false, message: "Token không hợp lệ" });
             }
     
-            const userRole = data.role;
-    
             try {
-                const { gateway_API } = req.body.gateway_API; // API của gateways
+                const { gateway_API } = req.query.gateway_API; 
                 // Khai báo các tham số cho phân trang, filter và sort
                 const { page = 1, limit = 10 } = req.query;
-                const { sortBy = 'createdAt', sortOrder = 'desc', filterKey, filterValue } = req.body;
+                const { sortBy , sortOrder, filterKey, filterValue } = req.body;
     
-                let filterCriteria = {};
+                let filterCriteria = { gateway_API };
     
-                // Thêm điều kiện lọc nếu được cung cấp
                 if (filterKey && filterValue) {
                     filterCriteria[filterKey] = filterValue;
                 }
@@ -176,58 +173,28 @@ device_router.post('/getallDevice', midleware.authenToken, async (req, res) => {
                 const sortQuery = {};
                 sortQuery[sortBy] = sortOrder === 'asc' ? 1 : -1;
     
-                let allDevices;
-                let totalCount;
+                const skip = (page - 1) * limit;
     
-                if (userRole === 'admin') {
-                    // Nếu là admin, lấy toàn bộ các device
-                    allDevices = await Device.find(filterCriteria)
-                        .sort(sortQuery)
-                        .skip((page - 1) * limit)
-                        .limit(limit);
-                    totalCount = await Device.countDocuments(filterCriteria);
-                } else {
-                    // Nếu không phải admin, lấy các device của gateway và các device có is_public=true
-                    const deviceGateways = await Device.find({ gateway_API });
-                    const publicDevices = await Device.find({ 'is_public': true });
+                const devices = await Device.find(filterCriteria)
+                    .sort(sortQuery)
+                    .skip(skip)
+                    .limit(limit);
     
-                    allDevices = deviceGateways.concat(publicDevices);
-    
-                    // Filter và sort các device như yêu cầu
-                    allDevices = allDevices
-                        .filter(device => {
-                            // Lọc các device theo các điều kiện nếu được cung cấp
-                            if (filterKey && filterValue) {
-                                return device[filterKey] === filterValue;
-                            }
-                            return true;
-                        })
-                        .sort((a, b) => {
-                            if (sortOrder === 'asc') {
-                                return a[sortBy] > b[sortBy] ? 1 : -1;
-                            } else {
-                                return a[sortBy] < b[sortBy] ? 1 : -1;
-                            }
-                        })
-                        .slice((page - 1) * limit, page * limit);
-    
-                    totalCount = allDevices.length;
-                }
+                const totalCount = await Device.countDocuments(filterCriteria);
     
                 return res.status(200).json({
                     success: true,
                     data: {
                         total: totalCount,
-                        devices: allDevices,
+                        devices: devices,
                     },
                 });
-    
             } catch (err) {
                 console.log(err);
                 return res.status(500).json({ success: false, message: "Lỗi Server. Vui lòng thử lại sau" });
             }
         });
-    })
+})
 
 
 module.exports = device_router
