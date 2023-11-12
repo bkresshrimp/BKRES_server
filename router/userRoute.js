@@ -17,7 +17,7 @@ user_router.post('/login',async (req,res)=>{
     if(!user) return res.status(200).json({err:'Email or Password is not correct'})
     const checkPassword = await bcrypt.compare(req.body.password,user.hash_password)
     if(!checkPassword) return res.status(200).json({err:"Email or Password is not correct"})
-    const accessToken  = jwt.sign({email:req.body.email},process.env.ACCESS_TOKEN_SECRET,{expiresIn:'10h'})
+    const accessToken  = jwt.sign({email:req.body.email,role:user.role},process.env.ACCESS_TOKEN_SECRET,{expiresIn:'10h'})
     
     res.json({
         Token:accessToken
@@ -96,6 +96,7 @@ user_router.post('/get_alluser', midleWare.authenToken, async (req, res) => {
     
     // Xác thực token
     jwt.verify(Token, process.env.ACCESS_TOKEN_SECRET, async (err, data) => {
+        console.log(data)
         if (err) {
             return res.status(401).json({ success: false, message: "Token không hợp lệ" });
         }
