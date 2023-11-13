@@ -14,7 +14,7 @@ sensor_router.post('/create',midleware.authenToken,async (req,res)=>{
     const Token = req.header('authorization')
     jwt.verify(Token, process.env.ACCESS_TOKEN_SECRET,async(err,data1)=>{
         console.log(req.body)
-        Device.findOne({ device_id: req.body.device_id }, async (err, device) => {
+        Device.findOne({ device_API: req.body.device_API }, async (err, device) => {
             if (err) {
                 // Xử lý lỗi ở đây
                 console.error(err);
@@ -28,14 +28,14 @@ sensor_router.post('/create',midleware.authenToken,async (req,res)=>{
             // Tiếp tục tìm kiếm sensor
             var findNameSensor = await device.sensor.find(sensor => sensor.sensor_name === req.body.sensor_name);
             if(findNameSensor) return res.json({status:'err', mess:"Name is match"})
-            var Api = device.API + makeid(8)
+            var Api = device.device_API + makeid(8)
             var sensor = new Sensor({
                 sensor_name: req.body.sensor_name,
-                device_id: req.body.device_id,
+                device_API: req.body.device_API,
                 provider: req.body.provider,
                 unit: req.body.unit,
                 describe : req.body.describe, 
-                API :Api ,
+                sensor_API :Api ,
         
             })
             
@@ -63,16 +63,16 @@ sensor_router.post('/create',midleware.authenToken,async (req,res)=>{
 })
 
 
-sensor_router.delete('/deletesensor/:API', midleware.authenToken,(req,res)=>{
+sensor_router.delete('/deletesensor/:sensor_API', midleware.authenToken,(req,res)=>{
 /* 	#swagger.tags = ['Sensor']
     #swagger.description = 'Endpoint to delete sensor' */
     const Token = req.header('authorization')
     jwt.verify(Token,process.env.ACCESS_TOKEN_SECRET,async (err,data)=>{
         try {
-            const API = req.params.API; 
+            const sensor_API = req.params.sensor_API; 
         
             // Kiểm tra xem sensor có tồn tại không
-            const sensor = await Sensor.findOne({ API });
+            const sensor = await Sensor.findOne({ sensor_API });
         
             if (!sensor) {
               res.status(404).json({ error: 'Sensor không tồn tại.' });
@@ -80,8 +80,8 @@ sensor_router.delete('/deletesensor/:API', midleware.authenToken,(req,res)=>{
             }
         
             // Xóa sensor khỏi cơ sở dữ liệu
-            await Sensor.findOneAndRemove({ API });                
-            Device.updateOne({},{$pull:{sensor:{API:API}}},{multi:true},(err)=>{
+            await Sensor.findOneAndRemove({ sensor_API });                
+            Device.updateOne({},{$pull:{sensor:{sensor_API:sensor_API}}},{multi:true},(err)=>{
                 if(!err) res.json({success:"success"})
             })
 
@@ -91,25 +91,42 @@ sensor_router.delete('/deletesensor/:API', midleware.authenToken,(req,res)=>{
     })
 })
 
-sensor_router.put('/updateSensor/:API', midleware.authenToken,(req,res)=>{
+
+sensor_router.put('/updateSensor/:sensor_API', midleware.authenToken,(req,res)=>{
     /* 	#swagger.tags = ['Sensor']
     #swagger.description = 'Endpoint to update sensor' */
     const Token = req.header('authorization')
     jwt.verify(Token,process.env.ACCESS_TOKEN_SECRET,async (err,data)=>{
     try {
-      const API = req.params.API; 
-      const updatedData = req.body;
-  
-      // Kiểm tra xem sensor có tồn tại không
-      const sensor = await Sensor.findOne({ API });
-  
-      if (!sensor) {
-        res.status(404).json({ error: 'Cam bien không tồn tại.' });
-        return;
-      }
-      console.log(updatedData)
-      // Cập nhật dữ liệu cam bien
-      await Sensor.updateOne({ API }, updatedData);
+      const sensor_API = req.params.sensor_API; 
+      const { sensor_name, device_API, provider, unit, describe } = req.body;
+
+      const sensor = await Sensor.findOne({ sensor_API });
+        if (!sensor) {
+            return res.status(404).json({ error: 'cam bien không tồn tại.' });
+        }
+
+        if (sensor_name) {
+            sensor.sensor_name = sensor_name;
+        }
+
+        if (device_API) {
+            sensor.device_API = device_API;
+        }
+
+        if (provider) {
+            sensor.provider = provider;
+        }
+
+        if (unit) {
+            sensor.unit = unit;
+        }
+
+        if (describe) {
+            sensor.describe = describe;
+        }
+
+        await sensor.save();
   
       res.status(200).json({ message: 'Dữ liệu cam bien đã được cập nhật thành công.' });
     } catch (error) {
@@ -119,14 +136,14 @@ sensor_router.put('/updateSensor/:API', midleware.authenToken,(req,res)=>{
 })
 
 
-sensor_router.post('/getSensor/:API', midleware.authenToken, async (req, res) => {
+sensor_router.post('/getSensor/:sensor_API', midleware.authenToken, async (req, res) => {
     /* 	#swagger.tags = ['Sensor']
         #swagger.description = 'Endpoint to get sensor' */
         const Token = req.header('authorization')
         jwt.verify(Token,process.env.ACCESS_TOKEN_SECRET,async (err,data)=>{
-            try {
-            const API = req.params.API;
-            var sensor = await Sensor.findOne({API})
+        try {
+            const sensor_API = req.params.sensor_API;
+            var sensor = await Sensor.findOne({sensor_API})
             console.log(sensor)
             res.json(sensor)
         } catch (error) {
@@ -135,9 +152,55 @@ sensor_router.post('/getSensor/:API', midleware.authenToken, async (req, res) =>
         })   
 })
 
-sensor_router.post('/getallSensor/:API', midleware.authenToken, async (req, res) => {
+
+sensor_router.post('/getallSensor', midleware.authenToken, async (req, res) => {
     /* 	#swagger.tags = ['Sensor']
         #swagger.description = 'Endpoint to get all sensor' */
+        const Token = req.header('authorization');
+
+        // Xác thực token
+        jwt.verify(Token, process.env.ACCESS_TOKEN_SECRET, async (err, data) => {
+            if (err) {
+                return res.status(401).json({ success: false, message: "Token không hợp lệ" });
+            }
+    
+            try {
+                const { device_API } = req.query.device_API; 
+                // Khai báo các tham số cho phân trang, filter và sort
+                const { page = 1, limit = 10 } = req.query;
+                const { sortBy , sortOrder, filterKey, filterValue } = req.body;
+    
+                let filterCriteria = { device_API };
+    
+                if (filterKey && filterValue) {
+                    filterCriteria[filterKey] = filterValue;
+                }
+    
+                const sortQuery = {};
+                sortQuery[sortBy] = sortOrder === 'asc' ? 1 : -1;
+    
+                const skip = (page - 1) * limit;
+    
+                const sensors = await Sensor.find(filterCriteria)
+                    .sort(sortQuery)
+                    .skip(skip)
+                    .limit(limit);
+    
+                const totalCount = await Sensor.countDocuments(filterCriteria);
+    
+                return res.status(200).json({
+                    success: true,
+                    data: {
+                        total: totalCount,
+                        sensors: sensors,
+                    },
+                });
+            } catch (err) {
+                console.log(err);
+                return res.status(500).json({ success: false, message: "Lỗi Server. Vui lòng thử lại sau" });
+            }
+        });
 })
+
 
 module.exports = sensor_router
