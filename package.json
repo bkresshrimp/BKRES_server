@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon server",
     "swagger": "node ./swagger.js",
-    "start-swagger": "npm run start && npm run swagger"
+    "start-swagger": " npm run swagger && npm run start "
   },
   "keywords": [],
   "author": "",

@@ -31,11 +31,11 @@ app.use("/api/gateway",gatewayrouter)
 app.use("/api/data",datarouter)
 app.use("/api/sensor",sensorrouter)
 
-app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
+app.use('/swagger/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
 
 app.listen(5000,()=>{
     console.log('App listen on port 5000')
-    console.log("Server is running!\nAPI documentation: http://localhost:5000/doc")
-})
+    console.log("Server is running!\nAPI documentation: http://localhost:5000/swagger/doc")
+})  
 

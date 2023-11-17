@@ -1,22 +1,32 @@
-const mongose = require("mongoose");
-var data_schema = new mongose.Schema({
-    device_API:{
-        type: String,
-        require: true
-    },
-    sensor_API:{
-        type:String,
-        required: true
-    },
-    last_time:{ type: Date, default: Date.now },
-    data:[{
-        data: String,
-        time: String
-    }],
-    isProcess:{
-        type:Boolean,
-        require: true,
-    },
-})
+const mongoose = require('mongoose');
 
-module.exports = mongose.model('data',data_schema)
+const dataSchema = new mongoose.Schema({
+    gateway_API: {
+        type: String,
+        required: true,
+    },
+    device_API: {
+        type: String,
+        required: true,
+    },
+    sensor_API: {
+        type: String,
+        required: true,
+    },
+    data: {
+        data: {
+            type: Number,
+            required: true,
+        },
+        time: {
+            type: String,
+            required: true,
+        },
+    },
+    isProcess: {
+        type: Boolean,
+        required: true,
+    },
+});
+
+module.exports = mongoose.model('Data', dataSchema);

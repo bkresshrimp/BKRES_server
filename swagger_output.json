@@ -782,6 +782,11 @@
         "description": "Endpoint to save data from device",
         "parameters": [
           {
+            "name": "gateway_API",
+            "in": "query",
+            "type": "string"
+          },
+          {
             "name": "device_API",
             "in": "query",
             "type": "string"
@@ -815,20 +820,36 @@
         "tags": [
           "Data"
         ],
-        "description": "Endpoint to save data from gateway",
+        "description": "Endpoint to save data from multiple devices of a gateway",
         "parameters": [
           {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "gateway_API": {
+                  "example": "any"
+                },
+                "time": {
+                  "example": "any"
+                },
+                "devices": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
         "responses": {
-          "401": {
-            "description": "Unauthorized"
+          "201": {
+            "description": "Created"
           },
-          "403": {
-            "description": "Forbidden"
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }

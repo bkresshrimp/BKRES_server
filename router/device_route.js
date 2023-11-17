@@ -38,7 +38,7 @@ device_router.post('/create',midleware.authenToken,async (req,res)=>{
                 is_public : req.body.is_public || false,
                 time_interval : req.body.time_interval || null,
                 last_data : new Date(), 
-                gateway_API:gateway_API
+                gateway_API:req.body.gateway_API
             })
             
             device.save((err)=>{
