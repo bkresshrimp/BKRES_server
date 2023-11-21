@@ -9,7 +9,10 @@ var {makeid} = require('../generate_apiKey')
 
 device_router.post('/create',midleware.authenToken,async (req,res)=>{
 /* 	#swagger.tags = ['Device']
-    #swagger.description = 'Endpoint to create device' */
+    #swagger.description = 'Endpoint to create device'
+    #swagger.security = [{
+            "apiKeyAuth": []
+    }] */
     console.log(req)
     const Token = req.header('authorization')
     jwt.verify(Token, process.env.ACCESS_TOKEN_SECRET,async(err,data1)=>{
@@ -67,7 +70,10 @@ device_router.post('/create',midleware.authenToken,async (req,res)=>{
 
 device_router.delete('/deletedevice/:device_API', midleware.authenToken,(req,res)=>{
     /* 	#swagger.tags = ['Device']
-    #swagger.description = 'Endpoint to delete device' */
+    #swagger.description = 'Endpoint to delete device' 
+    #swagger.security = [{
+            "apiKeyAuth": []
+    }]*/
     const Token = req.header('authorization')
     jwt.verify(Token,process.env.ACCESS_TOKEN_SECRET,async (err,data)=>{
         try {
@@ -96,7 +102,10 @@ device_router.delete('/deletedevice/:device_API', midleware.authenToken,(req,res
 
 device_router.put('/updateDevice/:device_API', midleware.authenToken,(req,res)=>{
     /* 	#swagger.tags = ['Device']
-    #swagger.description = 'Endpoint to update device' */
+    #swagger.description = 'Endpoint to update device'
+    #swagger.security = [{
+            "apiKeyAuth": []
+    }] */
     const Token = req.header('authorization')
     jwt.verify(Token,process.env.ACCESS_TOKEN_SECRET,async (err,data)=>{
     try {
@@ -132,7 +141,10 @@ device_router.put('/updateDevice/:device_API', midleware.authenToken,(req,res)=>
 
 device_router.post('/getDevice/:device_API', midleware.authenToken, async (req, res) => {
     /* 	#swagger.tags = ['Device']
-        #swagger.description = 'Endpoint to get device' */
+        #swagger.description = 'Endpoint to get device'
+        #swagger.security = [{
+            "apiKeyAuth": []
+    }] */
         const Token = req.header('authorization')
     jwt.verify(Token,process.env.ACCESS_TOKEN_SECRET,async (err,data)=>{
     try {
@@ -149,7 +161,10 @@ device_router.post('/getDevice/:device_API', midleware.authenToken, async (req, 
 
 device_router.post('/getallDevice', midleware.authenToken, async (req, res) => {
     /* 	#swagger.tags = ['Device']
-        #swagger.description = 'Endpoint to get all device' */
+        #swagger.description = 'Endpoint to get all device'
+        #swagger.security = [{
+            "apiKeyAuth": []
+    }] */
         const Token = req.header('authorization');
 
         // Xác thực token

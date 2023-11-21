@@ -9,7 +9,10 @@ var {makeid} = require('../generate_apiKey')
 
 sensor_router.post('/create',midleware.authenToken,async (req,res)=>{
         /* 	#swagger.tags = ['Sensor']
-    #swagger.description = 'Endpoint to create sensor' */
+    #swagger.description = 'Endpoint to create sensor' 
+    #swagger.security = [{
+            "apiKeyAuth": []
+    }]*/
     console.log(req)
     const Token = req.header('authorization')
     jwt.verify(Token, process.env.ACCESS_TOKEN_SECRET,async(err,data1)=>{
@@ -65,7 +68,10 @@ sensor_router.post('/create',midleware.authenToken,async (req,res)=>{
 
 sensor_router.delete('/deletesensor/:sensor_API', midleware.authenToken,(req,res)=>{
 /* 	#swagger.tags = ['Sensor']
-    #swagger.description = 'Endpoint to delete sensor' */
+    #swagger.description = 'Endpoint to delete sensor'
+    #swagger.security = [{
+            "apiKeyAuth": []
+    }] */
     const Token = req.header('authorization')
     jwt.verify(Token,process.env.ACCESS_TOKEN_SECRET,async (err,data)=>{
         try {
@@ -94,7 +100,10 @@ sensor_router.delete('/deletesensor/:sensor_API', midleware.authenToken,(req,res
 
 sensor_router.put('/updateSensor/:sensor_API', midleware.authenToken,(req,res)=>{
     /* 	#swagger.tags = ['Sensor']
-    #swagger.description = 'Endpoint to update sensor' */
+    #swagger.description = 'Endpoint to update sensor' 
+    #swagger.security = [{
+            "apiKeyAuth": []
+    }]*/
     const Token = req.header('authorization')
     jwt.verify(Token,process.env.ACCESS_TOKEN_SECRET,async (err,data)=>{
     try {
@@ -138,7 +147,10 @@ sensor_router.put('/updateSensor/:sensor_API', midleware.authenToken,(req,res)=>
 
 sensor_router.post('/getSensor/:sensor_API', midleware.authenToken, async (req, res) => {
     /* 	#swagger.tags = ['Sensor']
-        #swagger.description = 'Endpoint to get sensor' */
+        #swagger.description = 'Endpoint to get sensor' 
+        #swagger.security = [{
+            "apiKeyAuth": []
+    }]*/
         const Token = req.header('authorization')
         jwt.verify(Token,process.env.ACCESS_TOKEN_SECRET,async (err,data)=>{
         try {
@@ -155,7 +167,10 @@ sensor_router.post('/getSensor/:sensor_API', midleware.authenToken, async (req, 
 
 sensor_router.post('/getallSensor', midleware.authenToken, async (req, res) => {
     /* 	#swagger.tags = ['Sensor']
-        #swagger.description = 'Endpoint to get all sensor' */
+        #swagger.description = 'Endpoint to get all sensor' 
+        #swagger.security = [{
+            "apiKeyAuth": []
+    }]*/
         const Token = req.header('authorization');
 
         // Xác thực token

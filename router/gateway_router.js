@@ -9,7 +9,10 @@ var {makeid} = require('../generate_apiKey')
 
 gateway_router.post('/create',midleware.authenToken,async (req,res)=>{
 /* 	#swagger.tags = ['Gateway']
-    #swagger.description = 'Endpoint to create gateway' */
+    #swagger.description = 'Endpoint to create gateway' 
+    #swagger.security = [{
+            "apiKeyAuth": []
+    }]*/
     console.log(req)
     const Token = req.header('authorization')
     jwt.verify(Token, process.env.ACCESS_TOKEN_SECRET,async(err,data)=>{
@@ -57,7 +60,10 @@ gateway_router.post('/create',midleware.authenToken,async (req,res)=>{
 
 gateway_router.delete('/deletegateway/:gateway_API', midleware.authenToken,(req,res)=>{
 /* 	#swagger.tags = ['Gateway']
-    #swagger.description = 'Endpoint to delete gateway' */
+    #swagger.description = 'Endpoint to delete gateway' 
+    #swagger.security = [{
+            "apiKeyAuth": []
+    }]*/
     const Token = req.header('authorization')
     jwt.verify(Token,process.env.ACCESS_TOKEN_SECRET,async (err,data)=>{
         try {
@@ -86,7 +92,10 @@ gateway_router.delete('/deletegateway/:gateway_API', midleware.authenToken,(req,
 
 gateway_router.put('/updateGateway/:gateway_API', midleware.authenToken, async (req, res) => {
 /* 	#swagger.tags = ['Gateway']
-    #swagger.description = 'Endpoint to update gateway' */
+    #swagger.description = 'Endpoint to update gateway' 
+    #swagger.security = [{
+            "apiKeyAuth": []
+    }]*/
     const Token = req.header('authorization')
     jwt.verify(Token, process.env.ACCESS_TOKEN_SECRET,async(err,data)=>{
     try {
@@ -119,7 +128,10 @@ gateway_router.put('/updateGateway/:gateway_API', midleware.authenToken, async (
 
 gateway_router.post('/getGateway/:gateway_API', midleware.authenToken, async (req, res) => {
     /* 	#swagger.tags = ['Gateway']
-        #swagger.description = 'Endpoint to get gateway' */
+        #swagger.description = 'Endpoint to get gateway' 
+        #swagger.security = [{
+            "apiKeyAuth": []
+    }]*/
     const Token = req.header('authorization')
     jwt.verify(Token,process.env.ACCESS_TOKEN_SECRET,async (err,data)=>{
     try {
@@ -137,7 +149,10 @@ gateway_router.post('/getGateway/:gateway_API', midleware.authenToken, async (re
 
 gateway_router.post('/getallGateway', midleware.authenToken, async (req, res) => {
     /* #swagger.tags = ['Gateway']
-       #swagger.description = 'Endpoint to get all gateway' */
+       #swagger.description = 'Endpoint to get all gateway' 
+       #swagger.security = [{
+            "apiKeyAuth": []
+    }]*/
     const Token = req.header('authorization');
 
     // Xác thực token

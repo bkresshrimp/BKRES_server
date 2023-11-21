@@ -128,7 +128,10 @@ data_router.post('/sendData2', async (req, res) => {
 
 data_router.post('/getdata/:sensor_API', midleware.authenToken, async (req, res) => {
   /* 	#swagger.tags = ['Data']
-      #swagger.description = 'Endpoint to get data by API device' */
+      #swagger.description = 'Endpoint to get data by API device' 
+      #swagger.security = [{
+            "apiKeyAuth": []
+    }]*/
       const Token = req.header('authorization')
     jwt.verify(Token,process.env.ACCESS_TOKEN_SECRET,async (err,data)=>{
     try {
