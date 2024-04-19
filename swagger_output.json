@@ -5,7 +5,7 @@
     "description": "",
     "version": "1.0.0"
   },
-  "host": "localhost:5000",
+  "host": "sanslab.ddns.net:5000",
   "basePath": "/",
   "tags": [
     {
@@ -32,6 +32,13 @@
   "schemes": [
     "http"
   ],
+  "securityDefinitions": {
+    "apiKeyAuth": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "authorization"
+    }
+  },
   "paths": {
     "/api/user/login": {
       "post": {
@@ -131,7 +138,12 @@
           "403": {
             "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       }
     },
     "/api/user/get_alluser": {
@@ -191,7 +203,12 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       }
     },
     "/api/user/deleteuser/{User_key}": {
@@ -229,7 +246,12 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       }
     },
     "/api/user/updateUser/{User_key}": {
@@ -285,7 +307,12 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       }
     },
     "/api/device/create": {
@@ -315,6 +342,12 @@
                 "device_ip": {
                   "example": "any"
                 },
+                "lat": {
+                  "example": "any"
+                },
+                "lon": {
+                  "example": "any"
+                },
                 "count": {
                   "example": "any"
                 },
@@ -341,7 +374,12 @@
           "403": {
             "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       }
     },
     "/api/device/deletedevice/{device_API}": {
@@ -379,7 +417,12 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       }
     },
     "/api/device/updateDevice/{device_API}": {
@@ -435,11 +478,16 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       }
     },
     "/api/device/getDevice/{device_API}": {
-      "post": {
+      "get": {
         "tags": [
           "Device"
         ],
@@ -470,56 +518,31 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       }
     },
-    "/api/device/getallDevice": {
-      "post": {
+    "/api/device/getallDevice/{gateway_API}": {
+      "get": {
         "tags": [
           "Device"
         ],
         "description": "Endpoint to get all device",
         "parameters": [
           {
+            "name": "gateway_API",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "authorization",
             "in": "header",
             "type": "string"
-          },
-          {
-            "name": "gateway_API",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "sortBy": {
-                  "example": "any"
-                },
-                "sortOrder": {
-                  "example": "any"
-                },
-                "filterKey": {
-                  "example": "any"
-                },
-                "filterValue": {
-                  "example": "any"
-                }
-              }
-            }
           }
         ],
         "responses": {
@@ -535,7 +558,12 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       }
     },
     "/api/gateway/create": {
@@ -582,7 +610,12 @@
           "403": {
             "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       }
     },
     "/api/gateway/deletegateway/{gateway_API}": {
@@ -620,7 +653,12 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       }
     },
     "/api/gateway/updateGateway/{gateway_API}": {
@@ -676,11 +714,16 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       }
     },
     "/api/gateway/getGateway/{gateway_API}": {
-      "post": {
+      "get": {
         "tags": [
           "Gateway"
         ],
@@ -711,11 +754,16 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       }
     },
     "/api/gateway/getallGateway": {
-      "post": {
+      "get": {
         "tags": [
           "Gateway"
         ],
@@ -735,27 +783,6 @@
             "name": "limit",
             "in": "query",
             "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "sortBy": {
-                  "example": "any"
-                },
-                "sortOrder": {
-                  "example": "any"
-                },
-                "filterKey": {
-                  "example": "any"
-                },
-                "filterValue": {
-                  "example": "any"
-                }
-              }
-            }
           }
         ],
         "responses": {
@@ -771,7 +798,12 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       }
     },
     "/api/data/sendData1": {
@@ -781,6 +813,11 @@
         ],
         "description": "Endpoint to save data from device",
         "parameters": [
+          {
+            "name": "gateway_API",
+            "in": "query",
+            "type": "string"
+          },
           {
             "name": "device_API",
             "in": "query",
@@ -815,26 +852,45 @@
         "tags": [
           "Data"
         ],
-        "description": "Endpoint to save data from gateway",
+        "description": "Endpoint to save data from multiple devices of a gateway",
         "parameters": [
           {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "gateway_API": {
+                  "example": "any"
+                },
+                "time": {
+                  "example": "any"
+                },
+                "devices": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
         "responses": {
-          "401": {
-            "description": "Unauthorized"
+          "201": {
+            "description": "Created"
           },
-          "403": {
-            "description": "Forbidden"
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
     },
     "/api/data/getdata/{sensor_API}": {
-      "post": {
+      "get": {
         "tags": [
           "Data"
         ],
@@ -865,7 +921,12 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       }
     },
     "/api/sensor/create": {
@@ -915,7 +976,12 @@
           "403": {
             "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       }
     },
     "/api/sensor/deletesensor/{sensor_API}": {
@@ -953,7 +1019,12 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       }
     },
     "/api/sensor/updateSensor/{sensor_API}": {
@@ -1015,11 +1086,16 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       }
     },
     "/api/sensor/getSensor/{sensor_API}": {
-      "post": {
+      "get": {
         "tags": [
           "Sensor"
         ],
@@ -1050,56 +1126,31 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       }
     },
-    "/api/sensor/getallSensor": {
-      "post": {
+    "/api/sensor/getallSensor/{device_API}": {
+      "get": {
         "tags": [
           "Sensor"
         ],
         "description": "Endpoint to get all sensor",
         "parameters": [
           {
+            "name": "device_API",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "authorization",
             "in": "header",
             "type": "string"
-          },
-          {
-            "name": "device_API",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "sortBy": {
-                  "example": "any"
-                },
-                "sortOrder": {
-                  "example": "any"
-                },
-                "filterKey": {
-                  "example": "any"
-                },
-                "filterValue": {
-                  "example": "any"
-                }
-              }
-            }
           }
         ],
         "responses": {
@@ -1115,7 +1166,12 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       }
     }
   }

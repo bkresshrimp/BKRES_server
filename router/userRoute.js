@@ -79,7 +79,10 @@ user_router.post('/register', async (req, res) => {
 
 user_router.post('/get_user',midleWare.authenToken,(req,res)=>{
     /* 	#swagger.tags = ['User']
-    #swagger.description = 'Endpoint to get user' */
+    #swagger.description = 'Endpoint to get user' 
+    #swagger.security = [{
+            "apiKeyAuth": []
+    }]*/
     const Token = req.header('authorization')
     jwt.verify(Token,process.env.ACCESS_TOKEN_SECRET,async (err,data)=>{
         var user = await User.findOne({email:data.email})
@@ -90,7 +93,10 @@ user_router.post('/get_user',midleWare.authenToken,(req,res)=>{
 
 user_router.post('/get_alluser', midleWare.authenToken, async (req, res) => {
     /* 	#swagger.tags = ['User']
-    #swagger.description = 'Endpoint to get all user' */
+    #swagger.description = 'Endpoint to get all user' 
+    #swagger.security = [{
+            "apiKeyAuth": []
+    }]*/
     
     const Token = req.header('authorization');
     
@@ -150,7 +156,10 @@ user_router.post('/get_alluser', midleWare.authenToken, async (req, res) => {
 
 user_router.delete('/deleteuser/:User_key', midleWare.authenToken,(req,res)=>{
     /* 	#swagger.tags = ['User']
-    #swagger.description = 'Endpoint to delete user' */
+    #swagger.description = 'Endpoint to delete user' 
+    #swagger.security = [{
+            "apiKeyAuth": []
+    }]*/
     const Token = req.header('authorization')
     jwt.verify(Token,process.env.ACCESS_TOKEN_SECRET,async (err,data)=>{
         try {
@@ -177,7 +186,10 @@ user_router.delete('/deleteuser/:User_key', midleWare.authenToken,(req,res)=>{
 
 user_router.put('/updateUser/:User_key', midleWare.authenToken, async (req, res) => {
     /* #swagger.tags = ['User']
-    #swagger.description = 'Endpoint to update user' */
+    #swagger.description = 'Endpoint to update user' 
+    #swagger.security = [{
+            "apiKeyAuth": []
+    }]*/
     const Token = req.header('authorization');
     jwt.verify(Token, process.env.ACCESS_TOKEN_SECRET, async (err, data) => {
         try {

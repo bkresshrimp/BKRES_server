@@ -9,7 +9,10 @@ var {makeid} = require('../generate_apiKey')
 
 device_router.post('/create',midleware.authenToken,async (req,res)=>{
 /* 	#swagger.tags = ['Device']
-    #swagger.description = 'Endpoint to create device' */
+    #swagger.description = 'Endpoint to create device'
+    #swagger.security = [{
+            "apiKeyAuth": []
+    }] */
     console.log(req)
     const Token = req.header('authorization')
     jwt.verify(Token, process.env.ACCESS_TOKEN_SECRET,async(err,data1)=>{
@@ -32,13 +35,17 @@ device_router.post('/create',midleware.authenToken,async (req,res)=>{
             var device = new Device({
                 device_name: req.body.device_name,
                 device_API: Api,
-                device_ip:req.body.device_ip,              
+                device_ip:req.body.device_ip, 
+                location:[{
+                    lat: req.body.lat,
+                    lon: req.body.lon,    
+                }],             
                 count : req.body.count || 0,
                 mess_in_minute : req.body.mess_in_minute || 0,
                 is_public : req.body.is_public || false,
                 time_interval : req.body.time_interval || null,
                 last_data : new Date(), 
-                gateway_API:gateway_API
+                gateway_API:req.body.gateway_API
             })
             
             device.save((err)=>{
@@ -67,7 +74,10 @@ device_router.post('/create',midleware.authenToken,async (req,res)=>{
 
 device_router.delete('/deletedevice/:device_API', midleware.authenToken,(req,res)=>{
     /* 	#swagger.tags = ['Device']
-    #swagger.description = 'Endpoint to delete device' */
+    #swagger.description = 'Endpoint to delete device' 
+    #swagger.security = [{
+            "apiKeyAuth": []
+    }]*/
     const Token = req.header('authorization')
     jwt.verify(Token,process.env.ACCESS_TOKEN_SECRET,async (err,data)=>{
         try {
@@ -96,7 +106,10 @@ device_router.delete('/deletedevice/:device_API', midleware.authenToken,(req,res
 
 device_router.put('/updateDevice/:device_API', midleware.authenToken,(req,res)=>{
     /* 	#swagger.tags = ['Device']
-    #swagger.description = 'Endpoint to update device' */
+    #swagger.description = 'Endpoint to update device'
+    #swagger.security = [{
+            "apiKeyAuth": []
+    }] */
     const Token = req.header('authorization')
     jwt.verify(Token,process.env.ACCESS_TOKEN_SECRET,async (err,data)=>{
     try {
@@ -130,9 +143,12 @@ device_router.put('/updateDevice/:device_API', midleware.authenToken,(req,res)=>
 })
 
 
-device_router.post('/getDevice/:device_API', midleware.authenToken, async (req, res) => {
+device_router.get('/getDevice/:device_API', midleware.authenToken, async (req, res) => {
     /* 	#swagger.tags = ['Device']
-        #swagger.description = 'Endpoint to get device' */
+        #swagger.description = 'Endpoint to get device'
+        #swagger.security = [{
+            "apiKeyAuth": []
+    }] */
         const Token = req.header('authorization')
     jwt.verify(Token,process.env.ACCESS_TOKEN_SECRET,async (err,data)=>{
     try {
@@ -147,9 +163,12 @@ device_router.post('/getDevice/:device_API', midleware.authenToken, async (req, 
 })
 
 
-device_router.post('/getallDevice', midleware.authenToken, async (req, res) => {
+device_router.get('/getallDevice/:gateway_API', midleware.authenToken, async (req, res) => {
     /* 	#swagger.tags = ['Device']
-        #swagger.description = 'Endpoint to get all device' */
+        #swagger.description = 'Endpoint to get all device'
+        #swagger.security = [{
+            "apiKeyAuth": []
+    }] */
         const Token = req.header('authorization');
 
         // Xác thực token
@@ -159,37 +178,11 @@ device_router.post('/getallDevice', midleware.authenToken, async (req, res) => {
             }
     
             try {
-                const { gateway_API } = req.query.gateway_API; 
-                // Khai báo các tham số cho phân trang, filter và sort
-                const { page = 1, limit = 10 } = req.query;
-                const { sortBy , sortOrder, filterKey, filterValue } = req.body;
-    
-                let filterCriteria = { gateway_API };
-    
-                if (filterKey && filterValue) {
-                    filterCriteria[filterKey] = filterValue;
-                }
-    
-                const sortQuery = {};
-                sortQuery[sortBy] = sortOrder === 'asc' ? 1 : -1;
-    
-                const skip = (page - 1) * limit;
-    
-                const devices = await Device.find(filterCriteria)
-                    .sort(sortQuery)
-                    .skip(skip)
-                    .limit(limit);
-    
-                const totalCount = await Device.countDocuments(filterCriteria);
-    
-                return res.status(200).json({
-                    success: true,
-                    data: {
-                        total: totalCount,
-                        devices: devices,
-                    },
-                });
-            } catch (err) {
+                const gateway_API = req.params.gateway_API;
+                var device = await Device.find({gateway_API})
+                console.log(device)
+                res.json(device)
+            }  catch (err) {
                 console.log(err);
                 return res.status(500).json({ success: false, message: "Lỗi Server. Vui lòng thử lại sau" });
             }

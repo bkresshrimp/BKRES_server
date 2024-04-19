@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  # Dịch vụ MongoDB
+  mongo:
+    image: mongo
+    container_name: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: bkres
+      MONGO_INITDB_ROOT_PASSWORD: bkres
+    ports:
+      - "27017:27017"
+
+  # Dịch vụ ứng dụng Node.js
+  app:
+    build:
+      context: .
+    image: jamieanhduc281102/bkres_server:latest
+    container_name: bkres_server
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongo
+    environment:
+      MONGO_DB_CONNECTION_STRING: mongodb+srv://anhduc2002cute:T3FPpHg5mkzKFmOH@cluster0.bdogj3t.mongodb.net/?retryWrites=true&w=majority
