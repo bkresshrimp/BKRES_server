@@ -5,7 +5,7 @@
     "description": "",
     "version": "1.0.0"
   },
-  "host": "localhost:5000",
+  "host": "sanslab.ddns.net:5000",
   "basePath": "/",
   "tags": [
     {
@@ -342,6 +342,12 @@
                 "device_ip": {
                   "example": "any"
                 },
+                "lat": {
+                  "example": "any"
+                },
+                "lon": {
+                  "example": "any"
+                },
                 "count": {
                   "example": "any"
                 },
@@ -481,7 +487,7 @@
       }
     },
     "/api/device/getDevice/{device_API}": {
-      "post": {
+      "get": {
         "tags": [
           "Device"
         ],
@@ -520,53 +526,23 @@
         ]
       }
     },
-    "/api/device/getallDevice": {
-      "post": {
+    "/api/device/getallDevice/{gateway_API}": {
+      "get": {
         "tags": [
           "Device"
         ],
         "description": "Endpoint to get all device",
         "parameters": [
           {
+            "name": "gateway_API",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "authorization",
             "in": "header",
             "type": "string"
-          },
-          {
-            "name": "gateway_API",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "sortBy": {
-                  "example": "any"
-                },
-                "sortOrder": {
-                  "example": "any"
-                },
-                "filterKey": {
-                  "example": "any"
-                },
-                "filterValue": {
-                  "example": "any"
-                }
-              }
-            }
           }
         ],
         "responses": {
@@ -747,7 +723,7 @@
       }
     },
     "/api/gateway/getGateway/{gateway_API}": {
-      "post": {
+      "get": {
         "tags": [
           "Gateway"
         ],
@@ -787,7 +763,7 @@
       }
     },
     "/api/gateway/getallGateway": {
-      "post": {
+      "get": {
         "tags": [
           "Gateway"
         ],
@@ -807,27 +783,6 @@
             "name": "limit",
             "in": "query",
             "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "sortBy": {
-                  "example": "any"
-                },
-                "sortOrder": {
-                  "example": "any"
-                },
-                "filterKey": {
-                  "example": "any"
-                },
-                "filterValue": {
-                  "example": "any"
-                }
-              }
-            }
           }
         ],
         "responses": {
@@ -922,6 +877,9 @@
           "201": {
             "description": "Created"
           },
+          "400": {
+            "description": "Bad Request"
+          },
           "404": {
             "description": "Not Found"
           },
@@ -932,7 +890,7 @@
       }
     },
     "/api/data/getdata/{sensor_API}": {
-      "post": {
+      "get": {
         "tags": [
           "Data"
         ],
@@ -1137,7 +1095,7 @@
       }
     },
     "/api/sensor/getSensor/{sensor_API}": {
-      "post": {
+      "get": {
         "tags": [
           "Sensor"
         ],
@@ -1176,53 +1134,23 @@
         ]
       }
     },
-    "/api/sensor/getallSensor": {
-      "post": {
+    "/api/sensor/getallSensor/{device_API}": {
+      "get": {
         "tags": [
           "Sensor"
         ],
         "description": "Endpoint to get all sensor",
         "parameters": [
           {
+            "name": "device_API",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "authorization",
             "in": "header",
             "type": "string"
-          },
-          {
-            "name": "device_API",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "sortBy": {
-                  "example": "any"
-                },
-                "sortOrder": {
-                  "example": "any"
-                },
-                "filterKey": {
-                  "example": "any"
-                },
-                "filterValue": {
-                  "example": "any"
-                }
-              }
-            }
           }
         ],
         "responses": {

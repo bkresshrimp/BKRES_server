@@ -12,8 +12,8 @@ var gateway_schema = new mongoose.Schema({
         type:String,       
     },
     location:[{
-        lat: String,
-        lon: String,   
+        lat: Number,
+        lon: Number,   
     }],
     is_public:{
         type: Boolean,

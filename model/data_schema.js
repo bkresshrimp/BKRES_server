@@ -19,8 +19,8 @@ const dataSchema = new mongoose.Schema({
             required: true,
         },
         time: {
-            type: String,
-            required: true,
+            type: Date,
+            default: Date.now,
         },
     },
     isProcess: {

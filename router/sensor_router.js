@@ -145,7 +145,7 @@ sensor_router.put('/updateSensor/:sensor_API', midleware.authenToken,(req,res)=>
 })
 
 
-sensor_router.post('/getSensor/:sensor_API', midleware.authenToken, async (req, res) => {
+sensor_router.get('/getSensor/:sensor_API', midleware.authenToken, async (req, res) => {
     /* 	#swagger.tags = ['Sensor']
         #swagger.description = 'Endpoint to get sensor' 
         #swagger.security = [{
@@ -165,7 +165,7 @@ sensor_router.post('/getSensor/:sensor_API', midleware.authenToken, async (req, 
 })
 
 
-sensor_router.post('/getallSensor', midleware.authenToken, async (req, res) => {
+sensor_router.get('/getallSensor/:device_API', midleware.authenToken, async (req, res) => {
     /* 	#swagger.tags = ['Sensor']
         #swagger.description = 'Endpoint to get all sensor' 
         #swagger.security = [{
@@ -180,36 +180,10 @@ sensor_router.post('/getallSensor', midleware.authenToken, async (req, res) => {
             }
     
             try {
-                const { device_API } = req.query.device_API; 
-                // Khai báo các tham số cho phân trang, filter và sort
-                const { page = 1, limit = 10 } = req.query;
-                const { sortBy , sortOrder, filterKey, filterValue } = req.body;
-    
-                let filterCriteria = { device_API };
-    
-                if (filterKey && filterValue) {
-                    filterCriteria[filterKey] = filterValue;
-                }
-    
-                const sortQuery = {};
-                sortQuery[sortBy] = sortOrder === 'asc' ? 1 : -1;
-    
-                const skip = (page - 1) * limit;
-    
-                const sensors = await Sensor.find(filterCriteria)
-                    .sort(sortQuery)
-                    .skip(skip)
-                    .limit(limit);
-    
-                const totalCount = await Sensor.countDocuments(filterCriteria);
-    
-                return res.status(200).json({
-                    success: true,
-                    data: {
-                        total: totalCount,
-                        sensors: sensors,
-                    },
-                });
+                const device_API = req.params.device_API;
+                var sensor = await Sensor.find({device_API})
+                console.log(sensor)
+                res.json(sensor)
             } catch (err) {
                 console.log(err);
                 return res.status(500).json({ success: false, message: "Lỗi Server. Vui lòng thử lại sau" });

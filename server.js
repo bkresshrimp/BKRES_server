@@ -9,7 +9,10 @@ var datarouter= require('./router/data_router')
 var app = express()
 const bodyParser = require('body-parser')
 var mongoose = require('mongoose')
-var mongodb_url= 'mongodb+srv://anhduc2002cute:T3FPpHg5mkzKFmOH@cluster0.bdogj3t.mongodb.net/?retryWrites=true&w=majority'
+var mongodb_url= 'mongodb://admin:abc123@localhost:27017/bkres'
+const cors = require('cors')
+
+
 mongoose.Promise = global.Promise
 
 mongoose.connect(mongodb_url,).then(
@@ -21,7 +24,7 @@ mongoose.connect(mongodb_url,).then(
     }
 )
 
-
+app.use(cors())
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(bodyParser.json())
 app.use(express.json())

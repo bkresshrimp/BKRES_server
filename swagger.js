@@ -8,7 +8,7 @@ const doc = {
     title: 'BKRES API',
     description: ''
   },
-  host: 'localhost:5000',
+  host: 'sanslab.ddns.net:5000',
   schemes: ['http'],
   securityDefinitions: {
     apiKeyAuth: {

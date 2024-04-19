@@ -126,7 +126,7 @@ gateway_router.put('/updateGateway/:gateway_API', midleware.authenToken, async (
 })
 
 
-gateway_router.post('/getGateway/:gateway_API', midleware.authenToken, async (req, res) => {
+gateway_router.get('/getGateway/:gateway_API', midleware.authenToken, async (req, res) => {
     /* 	#swagger.tags = ['Gateway']
         #swagger.description = 'Endpoint to get gateway' 
         #swagger.security = [{
@@ -147,7 +147,7 @@ gateway_router.post('/getGateway/:gateway_API', midleware.authenToken, async (re
 })
 
 
-gateway_router.post('/getallGateway', midleware.authenToken, async (req, res) => {
+gateway_router.get('/getallGateway', midleware.authenToken, async (req, res) => {
     /* #swagger.tags = ['Gateway']
        #swagger.description = 'Endpoint to get all gateway' 
        #swagger.security = [{

@@ -16,6 +16,10 @@ var device_schema = new mongose.Schema({
         type:String,
         required: true
     },
+    location:[{
+        lat: Number,
+        lon: Number,   
+    }],
     count:{
         type: Number,
         require: true,
