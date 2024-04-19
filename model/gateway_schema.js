@@ -22,11 +22,15 @@ var gateway_schema = new mongoose.Schema({
     },
     device:[{
         device_name: String,
-        API:String,
+        device_API:String,
         created:{
             type:Date,
             default: Date.now(),
         },
+        location:[{
+            lat: Number,
+            lon: Number,   
+        }],
     }]
 })
 module.exports = mongoose.model('gateways',gateway_schema)
