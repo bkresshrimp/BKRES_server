@@ -45,7 +45,7 @@ var device_schema = new mongose.Schema({
     },
     sensor:[{
         sensor_name: String,
-        API:String,
+        sensor_API:String,
     }]
 })
 module.exports = mongose.model('device',device_schema)

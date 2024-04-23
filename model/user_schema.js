@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema({
     role: String,
     gateway:[{
         gateway_name: String,
-        API: String,
+        gateway_API: String,
         created:{
             type:Date,
             default: Date.now(),
