@@ -455,6 +455,12 @@
                 "device_ip": {
                   "example": "any"
                 },
+                "lat": {
+                  "example": "any"
+                },
+                "lon": {
+                  "example": "any"
+                },
                 "is_public": {
                   "example": "any"
                 }

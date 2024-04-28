@@ -71,7 +71,7 @@ data_router.post('/sendData2', async (req, res) => {
       console.log(req.body)
 
       // Kiểm tra xem các trường cần thiết đã được gửi hay không
-      if (!gateway_API || !time || !devices || !Array.isArray(devices)) {
+      if (!gateway_API  || !devices || !Array.isArray(devices)) {
           res.status(400).json({ error: 'Dữ liệu yêu cầu không hợp lệ.' });
           return;
       }
@@ -95,10 +95,10 @@ data_router.post('/sendData2', async (req, res) => {
               return;
           }
 
-          if (sensors.length !== Object.keys(sensorData).length) {
-              res.status(404).json({ error: 'Một hoặc nhiều cảm biến không tồn tại.' });
-              return;
-          }
+          // if (sensors.length !== Object.keys(sensorData).length) {
+          //     res.status(404).json({ error: 'Một hoặc nhiều cảm biến không tồn tại.' });
+          //     return;
+          // }
 
           // Lưu dữ liệu từ mỗi cảm biến thành một document riêng
           const sensorPromises = Object.entries(sensorData).map(async ([sensor_API, data]) => {

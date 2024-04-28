@@ -114,7 +114,7 @@ device_router.put('/updateDevice/:device_API', midleware.authenToken,(req,res)=>
     jwt.verify(Token,process.env.ACCESS_TOKEN_SECRET,async (err,data)=>{
     try {
       const device_API = req.params.device_API; 
-      const { device_name, device_ip, is_public } = req.body;
+      const { device_name, device_ip, lat, lon, is_public } = req.body;
 
       const device = await Device.findOne({ device_API });
         if (!device) {
@@ -127,6 +127,10 @@ device_router.put('/updateDevice/:device_API', midleware.authenToken,(req,res)=>
 
         if (device_ip) {
             device.device_ip = device_ip;
+        }
+        
+        if (lat && lon) {
+            device.location = [{ lat, lon }];
         }
 
         if (is_public) {
