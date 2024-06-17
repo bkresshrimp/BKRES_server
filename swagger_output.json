@@ -572,6 +572,40 @@
         ]
       }
     },
+    "/api/device/{device_API}/location": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "device_API",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "lat",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "lon",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
     "/api/gateway/create": {
       "post": {
         "tags": [
@@ -810,6 +844,40 @@
             "apiKeyAuth": []
           }
         ]
+      }
+    },
+    "/api/gateway/{gateway_API}/location": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "gateway_API",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "lat",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "lon",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
       }
     },
     "/api/data/sendData1": {

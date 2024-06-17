@@ -38,7 +38,7 @@ app.use('/swagger/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
 
 app.listen(5000,()=>{
-    console.log('App listen on port 5000')
+    console.log('App listen on port 5000 ')
     console.log("Server is running!\nAPI documentation: http://localhost:5000/swagger/doc")
 })  
 

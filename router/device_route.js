@@ -194,4 +194,38 @@ device_router.get('/getallDevice/:gateway_API', midleware.authenToken, async (re
 })
 
 
+// Cập nhật vị trí của một device
+device_router.get('/:device_API/location', async (req, res) => {
+    const { device_API } = req.params;
+    const { lat, lon } = req.query;
+
+    try {
+        // Cập nhật vị trí trong schema device
+        const device = await Device.findOneAndUpdate(
+            { device_API },
+            { $set: { 'location': [{ lat, lon }] } },
+            { new: true, runValidators: true }
+        );
+
+        if (!device) {
+            return res.status(404).send('Device not found');
+        }
+
+        // Cập nhật vị trí trong mảng device của schema gateway
+        const gateway = await Gateway.findOneAndUpdate(
+            { gateway_API: device.gateway_API, 'device.device_API': device_API },
+            { $set: { 'device.$.location': [{ lat, lon }] } },
+            { new: true, runValidators: true }
+        );
+
+        if (!gateway) {
+            return res.status(404).send('Gateway not found');
+        }
+
+        res.send({ device, gateway });
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+});
+
 module.exports = device_router

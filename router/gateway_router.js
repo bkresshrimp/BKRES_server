@@ -232,4 +232,24 @@ gateway_router.get('/getallGateway', midleware.authenToken, async (req, res) => 
 });
 
 
+gateway_router.get('/:gateway_API/location', async (req, res) => {
+    const { gateway_API } = req.params;
+    const { lat, lon } = req.query;
+
+    try {
+        const gateway = await Gateway.findOneAndUpdate(
+            { gateway_API },
+            { $set: { 'location': [{ lat, lon }] } },
+            { new: true, runValidators: true }
+        );
+
+        if (!gateway) {
+            return res.status(404).send('Gateway not found');
+        }
+
+        res.send(gateway);
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+});
 module.exports = gateway_router
